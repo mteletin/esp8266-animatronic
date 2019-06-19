@@ -1,0 +1,14 @@
+D:\DigitalScribe.Git\ESP8266_Animatron\Esp8266_Animatron\Esp8266_Animatron\bin\Debug\netcoreapp2.2\Esp8266_Animatron.deps.json
+D:\DigitalScribe.Git\ESP8266_Animatron\Esp8266_Animatron\Esp8266_Animatron\bin\Debug\netcoreapp2.2\Esp8266_Animatron.runtimeconfig.json
+D:\DigitalScribe.Git\ESP8266_Animatron\Esp8266_Animatron\Esp8266_Animatron\bin\Debug\netcoreapp2.2\Esp8266_Animatron.runtimeconfig.dev.json
+D:\DigitalScribe.Git\ESP8266_Animatron\Esp8266_Animatron\Esp8266_Animatron\bin\Debug\netcoreapp2.2\Esp8266_Animatron.dll
+D:\DigitalScribe.Git\ESP8266_Animatron\Esp8266_Animatron\Esp8266_Animatron\bin\Debug\netcoreapp2.2\Esp8266_Animatron.pdb
+D:\DigitalScribe.Git\ESP8266_Animatron\Esp8266_Animatron\Esp8266_Animatron\obj\Debug\netcoreapp2.2\Esp8266_Animatron.csproj.CoreCompileInputs.cache
+D:\DigitalScribe.Git\ESP8266_Animatron\Esp8266_Animatron\Esp8266_Animatron\obj\Debug\netcoreapp2.2\Esp8266_Animatron.RazorAssemblyInfo.cache
+D:\DigitalScribe.Git\ESP8266_Animatron\Esp8266_Animatron\Esp8266_Animatron\obj\Debug\netcoreapp2.2\Esp8266_Animatron.RazorAssemblyInfo.cs
+D:\DigitalScribe.Git\ESP8266_Animatron\Esp8266_Animatron\Esp8266_Animatron\obj\Debug\netcoreapp2.2\Esp8266_Animatron.AssemblyInfoInputs.cache
+D:\DigitalScribe.Git\ESP8266_Animatron\Esp8266_Animatron\Esp8266_Animatron\obj\Debug\netcoreapp2.2\Esp8266_Animatron.AssemblyInfo.cs
+D:\DigitalScribe.Git\ESP8266_Animatron\Esp8266_Animatron\Esp8266_Animatron\obj\Debug\netcoreapp2.2\Esp8266_Animatron.RazorTargetAssemblyInfo.cache
+D:\DigitalScribe.Git\ESP8266_Animatron\Esp8266_Animatron\Esp8266_Animatron\obj\Debug\netcoreapp2.2\Esp8266_Animatron.dll
+D:\DigitalScribe.Git\ESP8266_Animatron\Esp8266_Animatron\Esp8266_Animatron\obj\Debug\netcoreapp2.2\Esp8266_Animatron.pdb
+D:\DigitalScribe.Git\ESP8266_Animatron\Esp8266_Animatron\Esp8266_Animatron\obj\Debug\netcoreapp2.2\Esp8266_Animatron.csprojAssemblyReference.cache
