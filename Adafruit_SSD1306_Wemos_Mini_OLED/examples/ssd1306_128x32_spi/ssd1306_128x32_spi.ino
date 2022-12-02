@@ -1,36 +1,49 @@
+/*********************************************************************
+This is an example for our Monochrome OLEDs based on SSD1306 drivers
 
+  Pick one up today in the adafruit shop!
+  ------> http://www.adafruit.com/category/63_98
 
-/**
-   BasicHTTPClient.ino
+This example is for a 128x32 size display using SPI to communicate
+4 or 5 pins are required to interface
 
-    Created on: 24.05.2015
+Adafruit invests time and resources providing this open source code, 
+please support Adafruit and open-source hardware by purchasing 
+products from Adafruit!
 
-*/
-
-#include <Arduino.h>
-
-#include <ESP8266WiFi.h>
-#include <ESP8266WiFiMulti.h>
+Written by Limor Fried/Ladyada  for Adafruit Industries.  
+BSD license, check license.txt for more information
+All text above, and the splash screen must be included in any redistribution
+*********************************************************************/
 
 #include <SPI.h>
 #include <Wire.h>
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
 
-// SCL GPIO5
-// SDA GPIO4
-#define OLED_RESET 0  // GPIO0
-Adafruit_SSD1306 display(OLED_RESET);
+// If using software SPI (the default case):
+#define OLED_MOSI   9
+#define OLED_CLK   10
+#define OLED_DC    11
+#define OLED_CS    12
+#define OLED_RESET 13
+Adafruit_SSD1306 display(OLED_MOSI, OLED_CLK, OLED_DC, OLED_RESET, OLED_CS);
+
+/* Uncomment this block to use hardware SPI
+#define OLED_DC     6
+#define OLED_CS     7
+#define OLED_RESET  8
+Adafruit_SSD1306 display(OLED_DC, OLED_RESET, OLED_CS);
+*/
 
 #define NUMFLAKES 10
 #define XPOS 0
 #define YPOS 1
 #define DELTAY 2
 
-
-#define LOGO16_GLCD_HEIGHT 16
-#define LOGO16_GLCD_WIDTH  16
-unsigned char logo16_glcd_bmp[] =
+#define LOGO16_GLCD_HEIGHT 16 
+#define LOGO16_GLCD_WIDTH  16 
+static const unsigned char PROGMEM logo16_glcd_bmp[] =
 { B00000000, B11000000,
   B00000001, B11000000,
   B00000001, B11000000,
@@ -48,42 +61,17 @@ unsigned char logo16_glcd_bmp[] =
   B01110000, B01110000,
   B00000000, B00110000 };
 
-#if (SSD1306_LCDHEIGHT != 48)
+#if (SSD1306_LCDHEIGHT != 32)
 #error("Height incorrect, please fix Adafruit_SSD1306.h!");
 #endif
 
-#include <ESP8266HTTPClient.h>
-
-#include <WiFiClient.h>
-
-ESP8266WiFiMulti WiFiMulti;
-
-void setup() {
-  //setupOled();  
-
-  // by default, we'll generate the high voltage from the 3.3v line internally! (neat!)
-  display.begin(SSD1306_SWITCHCAPVCC, 0x3C);  // initialize with the I2C addr 0x3C (for the 64x48)
-  // init done
-
-  // Show image buffer on the display hardware.
-  // Since the buffer is intialized with an Adafruit splashscreen
-  // internally, this will display the splashscreen.
-  display.display();
-
-  setupWiFi();
-
-  // text display tests
-  display.clearDisplay();
-  display.display();
-}
-
-void setupOled() {
+void setup()   {                
   Serial.begin(9600);
-
+  
   // by default, we'll generate the high voltage from the 3.3v line internally! (neat!)
-  display.begin(SSD1306_SWITCHCAPVCC, 0x3C);  // initialize with the I2C addr 0x3C (for the 64x48)
+  display.begin(SSD1306_SWITCHCAPVCC);
   // init done
-
+  
   // Show image buffer on the display hardware.
   // Since the buffer is intialized with an Adafruit splashscreen
   // internally, this will display the splashscreen.
@@ -143,7 +131,7 @@ void setupOled() {
   testdrawtriangle();
   delay(2000);
   display.clearDisplay();
-
+   
   testfilltriangle();
   delay(2000);
   display.clearDisplay();
@@ -176,98 +164,33 @@ void setupOled() {
   // miniature bitmap display
   display.drawBitmap(30, 16,  logo16_glcd_bmp, 16, 16, 1);
   display.display();
-  delay(1);
 
   // invert the display
   display.invertDisplay(true);
-  delay(1000);
+  delay(1000); 
   display.invertDisplay(false);
-  delay(1000);
+  delay(1000); 
   display.clearDisplay();
 
   // draw a bitmap icon and 'animate' movement
   testdrawbitmap(logo16_glcd_bmp, LOGO16_GLCD_HEIGHT, LOGO16_GLCD_WIDTH);
 }
 
-void setupWiFi() {
-
-  Serial.begin(115200);
-  // Serial.setDebugOutput(true);
-
-  Serial.println();
-  Serial.println();
-  Serial.println();
-
-  for (uint8_t t = 4; t > 0; t--) {
-    Serial.printf("[SETUP] WAIT %d...\n", t);
-    Serial.flush();
-    delay(1000);
-  }
-
-  WiFi.mode(WIFI_STA);
-  WiFiMulti.addAP("wn", "aNisoarA1982mIrceA1980");
-
-}
 
 void loop() {
-  // wait for WiFi connection
-  if ((WiFiMulti.run() == WL_CONNECTED)) {
-
-    WiFiClient client;
-
-    HTTPClient http;
-
-    //Serial.print("[HTTP] begin...\n");
-    if (http.begin(client, "http://192.168.1.2:5000/api/values/1")) {  // HTTP
-
-
-      //Serial.print("[HTTP] GET...\n");
-      // start connection and send HTTP header
-      int httpCode = http.GET();
-
-      // httpCode will be negative on error
-      if (httpCode > 0) {
-        // HTTP header has been send and Server response header has been handled
-        //Serial.printf("[HTTP] GET... code: %d\n", httpCode);
-
-        // file found at server
-        if (httpCode == HTTP_CODE_OK || httpCode == HTTP_CODE_MOVED_PERMANENTLY) {
-          String payload = http.getString();
-          //Serial.println(payload);
-          for (uint8_t y=0; y<48; y++)
-          {
-            for (uint8_t x=0; x<64; x++)
-            {
-              int pos = y*65+x;              
-              if (pos < payload.length())
-                if (payload[pos]=='*') display.drawPixel(x, y, WHITE); else display.drawPixel(x, y, BLACK);
-            }
-          }          
-          display.display();
-        }
-      } else {
-        Serial.printf("[HTTP] GET... failed, error: %s\n", http.errorToString(httpCode).c_str());
-      }
-
-      http.end();
-    } else {
-      Serial.printf("[HTTP} Unable to connect\n");
-    }
-  }
-
-  //delay(1000);
+  
 }
 
 
 void testdrawbitmap(const uint8_t *bitmap, uint8_t w, uint8_t h) {
   uint8_t icons[NUMFLAKES][3];
-
+ 
   // initialize
   for (uint8_t f=0; f< NUMFLAKES; f++) {
     icons[f][XPOS] = random(display.width());
     icons[f][YPOS] = 0;
     icons[f][DELTAY] = random(5) + 1;
-
+    
     Serial.print("x: ");
     Serial.print(icons[f][XPOS], DEC);
     Serial.print(" y: ");
@@ -282,8 +205,8 @@ void testdrawbitmap(const uint8_t *bitmap, uint8_t w, uint8_t h) {
       display.drawBitmap(icons[f][XPOS], icons[f][YPOS], bitmap, w, h, WHITE);
     }
     display.display();
-    delay(50);
-
+    delay(200);
+    
     // then erase it + move it
     for (uint8_t f=0; f< NUMFLAKES; f++) {
       display.drawBitmap(icons[f][XPOS], icons[f][YPOS], bitmap, w, h, BLACK);
@@ -310,16 +233,14 @@ void testdrawchar(void) {
     display.write(i);
     if ((i > 0) && (i % 21 == 0))
       display.println();
-  }
+  }    
   display.display();
-  delay(1);
 }
 
 void testdrawcircle(void) {
   for (int16_t i=0; i<display.height(); i+=2) {
     display.drawCircle(display.width()/2, display.height()/2, i, WHITE);
     display.display();
-    delay(1);
   }
 }
 
@@ -329,7 +250,6 @@ void testfillrect(void) {
     // alternate colors
     display.fillRect(i, i, display.width()-i*2, display.height()-i*2, color%2);
     display.display();
-    delay(1);
     color++;
   }
 }
@@ -340,7 +260,6 @@ void testdrawtriangle(void) {
                      display.width()/2-i, display.height()/2+i,
                      display.width()/2+i, display.height()/2+i, WHITE);
     display.display();
-    delay(1);
   }
 }
 
@@ -353,7 +272,6 @@ void testfilltriangle(void) {
     if (color == WHITE) color = BLACK;
     else color = WHITE;
     display.display();
-    delay(1);
   }
 }
 
@@ -361,7 +279,6 @@ void testdrawroundrect(void) {
   for (int16_t i=0; i<display.height()/2-2; i+=2) {
     display.drawRoundRect(i, i, display.width()-2*i, display.height()-2*i, display.height()/4, WHITE);
     display.display();
-    delay(1);
   }
 }
 
@@ -372,54 +289,46 @@ void testfillroundrect(void) {
     if (color == WHITE) color = BLACK;
     else color = WHITE;
     display.display();
-    delay(1);
   }
 }
-
+   
 void testdrawrect(void) {
   for (int16_t i=0; i<display.height()/2; i+=2) {
     display.drawRect(i, i, display.width()-2*i, display.height()-2*i, WHITE);
     display.display();
-    delay(1);
   }
 }
 
-void testdrawline() {
+void testdrawline() {  
   for (int16_t i=0; i<display.width(); i+=4) {
     display.drawLine(0, 0, i, display.height()-1, WHITE);
     display.display();
-    delay(1);
   }
   for (int16_t i=0; i<display.height(); i+=4) {
     display.drawLine(0, 0, display.width()-1, i, WHITE);
     display.display();
-    delay(1);
   }
   delay(250);
-
+  
   display.clearDisplay();
   for (int16_t i=0; i<display.width(); i+=4) {
     display.drawLine(0, display.height()-1, i, 0, WHITE);
     display.display();
-    delay(1);
   }
   for (int16_t i=display.height()-1; i>=0; i-=4) {
     display.drawLine(0, display.height()-1, display.width()-1, i, WHITE);
     display.display();
-    delay(1);
   }
   delay(250);
-
+  
   display.clearDisplay();
   for (int16_t i=display.width()-1; i>=0; i-=4) {
     display.drawLine(display.width()-1, display.height()-1, i, 0, WHITE);
     display.display();
-    delay(1);
   }
   for (int16_t i=display.height()-1; i>=0; i-=4) {
     display.drawLine(display.width()-1, display.height()-1, 0, i, WHITE);
     display.display();
-    delay(1);
   }
   delay(250);
 
@@ -427,12 +336,10 @@ void testdrawline() {
   for (int16_t i=0; i<display.height(); i+=4) {
     display.drawLine(display.width()-1, 0, 0, i, WHITE);
     display.display();
-    delay(1);
   }
   for (int16_t i=0; i<display.width(); i+=4) {
-    display.drawLine(display.width()-1, 0, i, display.height()-1, WHITE);
+    display.drawLine(display.width()-1, 0, i, display.height()-1, WHITE); 
     display.display();
-    delay(1);
   }
   delay(250);
 }
@@ -444,8 +351,7 @@ void testscrolltext(void) {
   display.clearDisplay();
   display.println("scroll");
   display.display();
-  delay(1);
-
+ 
   display.startscrollright(0x00, 0x0F);
   delay(2000);
   display.stopscroll();
@@ -453,7 +359,7 @@ void testscrolltext(void) {
   display.startscrollleft(0x00, 0x0F);
   delay(2000);
   display.stopscroll();
-  delay(1000);
+  delay(1000);    
   display.startscrolldiagright(0x00, 0x07);
   delay(2000);
   display.startscrolldiagleft(0x00, 0x07);

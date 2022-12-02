@@ -39,8 +39,8 @@ namespace Esp8266_Animatron.Controllers
             Fonts.PrintSymbol(255, 8, 8);
             Fonts.PrintSymbol('2', 16, 8);
             Fonts.PrintSymbol('0', 24, 8);
-            Fonts.PrintSymbol('1', 32, 8);
-            Fonts.PrintSymbol('9', 40, 8);
+            Fonts.PrintSymbol('2', 32, 8);
+            Fonts.PrintSymbol('2', 40, 8);
             Fonts.PrintSymbol(255, 48, 8);
             Fonts.PrintSymbol(22,  56, 8);
 

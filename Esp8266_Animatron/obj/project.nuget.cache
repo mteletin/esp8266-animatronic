@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "5g6i7/DwaCTOwKi1TtUy7GQNBsQRF2/mqNiddQl/5K0kyr3TsyXF6sHDpE0rnrThEUTuzO1wK22aHEH2E9SMFA==",
+  "success": true,
+  "projectFilePath": "M:\\Workspace\\esp8266-animatronic\\Esp8266_Animatron\\Esp8266_Animatron.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\mirce\\.nuget\\packages\\microsoft.aspnetcore.razor.design\\2.2.0\\microsoft.aspnetcore.razor.design.2.2.0.nupkg.sha512"
+  ],
+  "logs": []
+}
