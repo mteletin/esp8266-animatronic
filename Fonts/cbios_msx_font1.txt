@@ -1,15 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Esp8266_Animatron.Controllers
-{
-    public class Fonts
-    {
-        static public byte[] xbios = new byte[] {
-           0x00, 0x3c, 0x3c, 0x36, 0x08, 0x08, 0x08, 0x00, 0xff, 0x3c, 0xc3, 0x30,
+0x00, 0x3c, 0x3c, 0x36, 0x08, 0x08, 0x08, 0x00, 0xff, 0x3c, 0xc3, 0x30,
            0x00, 0x04, 0x1c, 0x08, 0x08, 0x08, 0x00, 0x08, 0x08, 0x08, 0x08, 0x00,
            0x00, 0x00, 0x08, 0x08, 0x81, 0x80, 0x01, 0x00, 0x00, 0x42, 0x7e, 0x55,
            0x14, 0x1c, 0x1c, 0x00, 0xff, 0x42, 0xbd, 0x20, 0x0e, 0x0c, 0x3c, 0x22,
@@ -179,76 +168,4 @@ namespace Esp8266_Animatron.Controllers
            0x04, 0x03, 0x00, 0x00, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x0e, 0x55,
            0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x04, 0x0e, 0x00, 0x00, 0x00,
            0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00,
-           0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xaa };
-
-
-        public static string Characters = @"                ┼┴┬┤├┼│─┌┐└┘ /\ " +
-                                          @" !""#$%&'()*+,-./0123456789:;<=>?" +
-                                          @"@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_" +
-                                          @"`abcdefghijklmnopqrstuvwxyz{|}~ " +
-                                          @"ÇüéâäàåçêëèïîìÄÅÉæÆôöòûùÿÖÜ¢£¥₧ƒ" +
-                                          @"áíóúñÑªº¿⌐¬½¼¡«»                " +
-                                          @"▄  ▀  ▌  ▐              ▓  █▄▌▐▀" +
-                                          @"αßΓπΣσµτΦΘΩδ∞φε∩≡±≥≤⌠⌡÷≈°∙·√ⁿ²■▒";
-
-        public static Dictionary<char, byte> GetSymbols()
-        {
-            if (Symbols == null)
-            {
-                Symbols = new Dictionary<char, byte>();
-
-                for (int x = 0; x < 256; x++)
-                {
-                    if (!Symbols.ContainsKey(Characters[x])) Symbols.Add(Characters[x], (byte) x);
-                }
-            }
-            return Symbols;
-        }
-
-        static Dictionary<char, byte> Symbols;
-
-        public static int[] GetSymbol(int id)
-        {
-            int[] data = new int[8];
-            int pointer = id / 32 * 256 + id % 32;
-            for (int y = 0; y < 8; y++)
-            {
-                data[y] = xbios[pointer + y * 32];
-            }
-            return data;
-        }
-
-        public static void PrintSymbol(char symbol, int x, int y)
-        {
-            Screen canvas = Screen.Init();
-
-            var data = GetSymbol(GetSymbols()[symbol]);
-            for (int yy = 0; yy < 8; yy++)
-            {
-                int line = data[yy];
-                for (int xx = 0; xx < 8; xx++)
-                {
-                    canvas.Canvas[x + xx, y + yy] = (line & 0x1);
-                    line >>= 1;
-                }
-            }
-        }
-
-        public static void PrintSymbol(int symbol, int x, int y)
-        {
-            Screen canvas = Screen.Init();
-
-            var data = GetSymbol(symbol);
-            for (int yy = 0; yy < 8; yy++)
-            {
-                int line = data[yy];
-                for (int xx = 0; xx < 8; xx++)
-                {
-                    canvas.Canvas[x + xx, y + yy] = (line & 0x1);
-                    line >>= 1;
-                }
-            }
-        }
-
-    }
-}
+           0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xaa
